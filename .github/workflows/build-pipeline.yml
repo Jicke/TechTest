@@ -1,7 +1,4 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: .NET
+name: tech-test-build
 
 on:
   push:
@@ -11,9 +8,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -23,6 +18,17 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --output "${{ github.ref }}"
     - name: Test
       run: dotnet test --no-build --verbosity normal
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4.3.5
+      with:
+        name: tech-test-artifact
+        path: "${{ github.ref }}"
+        retention-days: 30
+        overwrite: true
+          
