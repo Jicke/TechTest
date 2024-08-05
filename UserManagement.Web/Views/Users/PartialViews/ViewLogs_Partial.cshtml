@@ -1,0 +1,36 @@
+﻿<h2>User Logs</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Message</th>
+                <th>Date</th>
+                <th style="width: 1px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.Message
+                    </td>
+                    <td>
+                        @item.Timestamp.ToString("dd/MM/yyyy hh:mm")
+                    </td>
+                    <td>
+                        @if (item.HasChanges)
+                        {
+                            <a asp-controller="Users" asp-action="ViewLog" asp-route-id="@item.Id" class="dropdown-item">View</a>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

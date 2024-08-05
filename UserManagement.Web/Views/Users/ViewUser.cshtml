@@ -1,0 +1,66 @@
+﻿@model UserManagement.Web.Models.Users.UserListItemViewModel
+
+<h2>User Information</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <td>
+                    ID
+                </td>
+                <td>
+                    @(Model.Id)
+                </td>
+            </tr>       
+            <tr>
+                <td>
+                    Forename
+                </td>
+                <td>
+                    @(Model.Forename)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Surname
+                </td>
+                <td>
+                    @(Model.Surname)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Email
+                </td>
+                <td>
+                    @(Model.Email)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Account Active
+                </td>
+                <td>
+                    @(Model.IsActive ? "Yes" : "No")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Date of Birth
+                </td>
+                <td>
+                    @(Model.DateOfBirth.ToString("dd/MM/yyyy"))
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+@if(Model.Logs != null)
+{
+    <partial name="PartialViews/ViewLogs_Partial" model="Model.Logs" />
+}
+<div>
+    <div class="btn-group" role="group">
+        <a asp-controller="Users" asp-action="List" class="btn btn-default">Back</a>
+    </div>
+</div>

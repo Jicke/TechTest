@@ -1,4 +1,17 @@
 ﻿@model UserManagement.Web.Models.Users.UserListViewModel
+<script src="~/js/user.js"></script>
+<script>
+    $(function () {
+        $('.delete-user').on("click", function (event) {
+            var userId = $(this).data('id');
+            ShowDeleteDialog(userId);
+        });
+
+        $('#confirmDelete').on("click", function () {
+            DeleteUser();
+        });
+    });
+</script>
 
 <h2>User List</h2>
 
@@ -11,6 +24,7 @@
                 <th>Surname</th>
                 <th>Email</th>
                 <th>Account Active</th>
+                <th>Date of Birth</th>
                 <th style="width: 1px;"></th>
             </tr>
         </thead>
@@ -34,14 +48,17 @@
                         @(item.IsActive ? "Yes" : "No")
                     </td>
                     <td>
+                        @(item.DateOfBirth.ToString("dd/MM/yyyy"))
+                    </td>
+                    <td>
                         <div class="dropdown">
                             <button type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="btnToggleActions">
                                 Actions
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="btnToggleActions">
-                                <li><a class="dropdown-item" href="#">View</a></li>
-                                <li><a class="dropdown-item" href="#">Edit</a></li>
-                                <li><a class="dropdown-item" href="#">Delete</a></li>
+                                <li><a asp-controller="Users" asp-action="ViewUser" asp-route-id="@item.Id" class="dropdown-item">View</a></li>
+                                <li><a asp-controller="Users" asp-action="EditUser" asp-route-id="@item.Id" class="dropdown-item">Edit</a></li>
+                                <li><a class="dropdown-item delete-user" href="#" data-id="@item.Id">Delete</a></li>
                             </ul>
                         </div>
                     </td>
@@ -54,12 +71,39 @@
 <div>
     <div class="btn-group" role="group">
         <a asp-controller="Users" asp-action="List" class="btn btn-default">Show All</a>
-        <a href="#" class="btn btn-default">Active Only</a>
-        <a href="#" class="btn btn-default">Non Active</a>
+        <a asp-controller="Users" asp-action="List" asp-route-active="true" class="btn btn-default">Active Only</a>
+        <a asp-controller="Users" asp-action="List" asp-route-active="false" class="btn btn-default">Non Active</a>
     </div>
 
-    <a href="#" class="btn btn-primary float-end">
+    <a asp-controller="Users" asp-action="EditUser" class="btn btn-primary float-end">
         Add User
     </a>
 </div>
+
+<div class="modal" tabindex="-1" id="deleteConfirmationModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this user?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@using (Html.BeginForm("DeleteUser", "Users", FormMethod.Post, new { id = "DeleteUserForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("DeleteUserId", 0)
+}
+
+
 

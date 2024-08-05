@@ -41,5 +41,6 @@ public class UserServiceTests
     }
 
     private readonly Mock<IDataContext> _dataContext = new();
-    private UserService CreateService() => new(_dataContext.Object);
+    private UserLogService _userLogService => new(_dataContext.Object);
+    private UserService CreateService() => new(_dataContext.Object, _userLogService);
 }

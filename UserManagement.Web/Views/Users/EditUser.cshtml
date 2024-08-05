@@ -1,0 +1,91 @@
+﻿@model UserManagement.Web.Models.Users.UserListItemViewModel
+ <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-datepicker.min.css" />
+<script src="~/lib/bootstrap/dist/js/bootstrap-datepicker.min.js"></script>
+<script src="~/js/user.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#btnSaveUser").on("click",
+            function () {
+                SaveUser()
+            });
+        $('#DateOfBirth').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+</script>
+<h2>@(Model.Id > 0 ? "Edit User" : "Add User")</h2>
+@using (Html.BeginForm("EditUser", "Users", FormMethod.Post, new { id = "SaveUserForm" }))
+{
+Html.AntiForgeryToken();
+
+<div id="errorMessage" class="alert alert-danger d-none" role="alert">       
+</div>
+
+<div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <td>
+                        ID
+                    </td>
+                    <td>
+                        <input type="text" asp-for="Id" class="form-control" readonly value="@(Model.Id)" />                        
+                    </td>
+                </tr>       
+                <tr>
+                    <td>
+                        Forename
+                    </td>
+                    <td>
+                        <input type="text" asp-for="Forename" class="form-control" value="@(Model.Forename)" />                    
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Surname
+                    </td>
+                    <td>
+                        <input type="text" asp-for="Surname" class="form-control" value="@(Model.Surname)" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Email
+                    </td>
+                    <td>
+                        <input type="text" asp-for="Email" class="form-control" value="@(Model.Email)" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Account Active
+                    </td>
+                    <td>                        
+                        <input type="checkbox" asp-for="IsActive" class="form-check-input" checked="@(Model.IsActive)" />                        
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Date of Birth
+                    </td>
+                    <td>
+                        <input type="text" asp-for="DateOfBirth" id="DateOfBirth" class="form-control" value="@(Model.DateOfBirth.ToString("dd/MM/yyyy"))" />
+                        <small class="text-muted">(Format: dd/mm/yyyy)</small>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    <div>
+    <div class="btn-group" role="group">
+        <a asp-controller="Users" asp-action="List" class="btn btn-default" id="btnBack">Back</a>
+    </div>
+
+    <a class="btn btn-primary float-end" id="btnSaveUser">
+        Save User
+    </a>
+</div>
+}
+

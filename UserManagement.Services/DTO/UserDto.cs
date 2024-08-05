@@ -1,12 +1,8 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace UserManagement.Models;
-
-public class User
+namespace UserManagement.Services.DTO;
+public class UserDto
 {
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
     public string Forename { get; set; } = default!;
     public string Surname { get; set; } = default!;

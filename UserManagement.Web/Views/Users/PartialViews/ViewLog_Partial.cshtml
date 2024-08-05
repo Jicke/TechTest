@@ -1,0 +1,29 @@
+﻿@model UserManagement.Web.Models.Users.UserLogDetailItemViewModel
+<h2>User Changes</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Property</th>
+                <th>Changed From</th>
+                <th>Changed To</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Changes)
+            {
+                <tr>
+                    <td>
+                        @item.PropertyName
+                    </td>
+                    <td>
+                        @item.OldValue
+                    </td>
+                    <td>
+                        @item.NewValue
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
