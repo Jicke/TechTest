@@ -22,7 +22,7 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Publish
-      run: dotnet publish  ~/UserManagement.Web/UserManagement.Web.csproj --artifacts-path ${{ github.ref }}
+      run: dotnet publish ~/UserManagement.Web/UserManagement.Web.csproj --artifacts-path ${{ github.ref }} --no-build
   publish:
     runs-on: ubuntu-latest
     steps:
