@@ -26,8 +26,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: tech-test-artifact
-        path: ${{env.DOTNET_ROOT}}/myapp      
+        name: tech-test-artifact            
   publish:
     runs-on: ubuntu-latest
     steps:
