@@ -1,0 +1,60 @@
+parameters:
+- name: environment
+  displayName: Environment
+  type: string
+  default: dev
+  values:
+  - dev
+  - uat
+  - staging
+  - prod
+
+trigger: none
+
+variables: 
+  - name: location
+    value: 'uksouth'
+  - name: armcName
+      value: 'tech-test'
+  - name: subscriptionId
+      value: 'subscriptionId'
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+- stage: Lint
+  jobs: 
+  - job: Lint
+    steps:
+      - script: |
+          az bicep build --file main.bicep
+- stage: Validate
+  jobs:
+    - job: Validate
+      steps:
+        - task: AzureResourceManagerTemplateDeployment@3
+          inputs:
+            deploymentScope: 'Subscription'
+            azureResourceManagerConnection: '${{ variables.armcName }}'
+            subscriptionId: '${{ variables.subscriptionId }}'
+            location: '${{ variables.location }}'
+            templateLocation: 'Linked artifact'
+            csmFile: 'main.bicep'
+            deploymentMode: 'Validation'
+            overrideParameters: '-environment "${{ parameters.environment }}"  -defaultLocation "${{ variables.location }}"'
+- stage: Create_Resources
+  jobs:
+    - job: Create_Resources
+      steps:
+        - task: AzureResourceManagerTemplateDeployment@3
+          inputs:
+            deploymentScope: 'Subscription'
+            azureResourceManagerConnection: '${{ variables.armcName }}'
+            subscriptionId: '${{ variables.subscriptionId }}'
+            location: '${{ variables.location }}'
+            templateLocation: 'Linked artifact'
+            csmFile: 'main.bicep'
+            overrideParameters: '-environment "${{ parameters.environment }}"  -defaultLocation "${{ variables.location }}"'
+            deploymentMode: 'Incremental'
+
